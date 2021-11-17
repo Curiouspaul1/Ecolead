@@ -10,7 +10,7 @@ class Config:
 class DevConfig(Config):
     DEBUG = True
     ENV = os.getenv('FLASK_ENV')
-    SQLALCHEMY_DATABASE_URI = f"sqlite3:///{Config.BASE_URL}/dev.sqlite3"
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{Config.BASE_URL}/dev.sqlite"
 
 
 class ProdConfig(Config):

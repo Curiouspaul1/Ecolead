@@ -4,7 +4,7 @@ from .extensions import *
 
 # flask app factory
 def create_app(config_name):
-    app = Flask
+    app = Flask(__name__)
 
     # add config
     app.config.from_object(config_options[config_name])
@@ -13,7 +13,11 @@ def create_app(config_name):
     db.init_app(app)
     ma.init_app(app)
     bcrypt_.init_app(app)
-
+    migrate.init_app(app, db=db)
 
     # TODO: register blueprints
+    from .donate import donor
+    
+    app.register_blueprint(donor, url_prefix='/donor')
+
     return app
