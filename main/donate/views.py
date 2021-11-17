@@ -3,6 +3,9 @@ from flask import request, jsonify
 from sqlalchemy.exc import IntegrityError
 from main import db, bcrypt_
 from models import Donor
+from schema import (
+    donor_schema, donors_schema
+)
 import json
 
 
@@ -38,4 +41,24 @@ def register():
 @donor.get("/")
 def get_donors():
     data = Donor.query.all()
-    return json.dumps(data)
+    return {
+        "status": "success",
+        "data": {
+            "donors": json.dumps(donors_schema(data))
+        }
+    }, 200
+
+@donor.get("/<donor_id>")
+def get_donor(donor_id):
+    donor = Donor.query.filter_by(id=donor_id).first()
+    if donor:
+        return {
+            "status": "success",
+            "data": {
+                "donor": donor_schema.dump(donor)
+            }
+        }, 200
+    return {
+        "status": "fail",
+        "message": f"No user with id of {donor_id} was found"
+    }, 404

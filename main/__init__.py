@@ -1,6 +1,9 @@
 from flask import Flask
 from config import config_options
 from .extensions import *
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # flask app factory
 def create_app(config_name):
